@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Calory Local</title>
+  <link rel="stylesheet" href="./styles.css"/>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="dot"></div>
+      <div>
+        <div class="title">Calory Local</div>
+        <div class="subtitle">photo → estimate → save text locally</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <a class="navlink active" href="./index.html">Log</a>
+      <a class="navlink" href="./library.html">Food Library</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>New entry</h2>
+
+      <div class="grid2">
+        <div>
+          <label class="label" for="date">Date</label>
+          <input id="date" type="date" class="input"/>
+        </div>
+        <div>
+          <label class="label" for="meal">Meal label (optional)</label>
+          <input id="meal" type="text" class="input" placeholder="e.g., turkey spaghetti, chicken bowl"/>
+        </div>
+      </div>
+
+      <label class="label" for="note">Notes (optional)</label>
+      <textarea id="note" class="textarea" rows="3" placeholder="e.g., Chipotle-ish, no sour cream, extra cheese"></textarea>
+
+      <div class="grid2">
+        <div>
+          <label class="label" for="photo">Food photo (optional)</label>
+          <input id="photo" type="file" accept="image/*" class="input"/>
+          <div id="photoMeta" class="muted small"></div>
+        </div>
+        <div>
+          <div id="previewWrap" class="previewWrap hidden">
+            <img id="preview" alt="preview"/>
+            <button id="removePhoto" class="btn ghost smallBtn" type="button">Remove photo</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <button id="estimateBtn" class="btn" type="button">Estimate calories</button>
+        <div id="status" class="muted"></div>
+      </div>
+
+      <div id="estimateCard" class="estimate hidden">
+        <div class="estimateTop">
+          <div>
+            <div class="big" id="estCalories">—</div>
+            <div class="muted" id="estRange">—</div>
+            <div class="muted small" id="estMatch">—</div>
+          </div>
+          <div class="adjust">
+            <div class="muted small">Adjust</div>
+            <div class="row wrap">
+              <button class="chip" data-adjust="-0.1" type="button">-10%</button>
+              <button class="chip" data-adjust="0.1" type="button">+10%</button>
+              <button class="chip" data-delta="-100" type="button">-100</button>
+              <button class="chip" data-delta="-50" type="button">-50</button>
+              <button class="chip" data-delta="50" type="button">+50</button>
+              <button class="chip" data-delta="100" type="button">+100</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid2">
+          <div>
+            <h3>Breakdown</h3>
+            <ul id="breakdown" class="list"></ul>
+          </div>
+          <div>
+            <h3>Questions (if needed)</h3>
+            <ul id="questions" class="list"></ul>
+            <h3>Assumptions</h3>
+            <ul id="assumptions" class="list"></ul>
+          </div>
+        </div>
+
+        <div class="row">
+          <button id="saveBtn" class="btn good" type="button">Save to log</button>
+          <button id="saveFoodBtn" class="btn ghost" type="button">Save as Food (to reuse)</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="row space">
+        <h2>Entries</h2>
+        <div class="row">
+          <span class="muted">Total:</span>
+          <span id="dayTotal" class="pill">0</span>
+        </div>
+      </div>
+      <div id="entries" class="entries"></div>
+    </section>
+  </main>
+
+  <footer class="footer muted small">
+    Local-only storage (IndexedDB). Photos are used only for estimation and never saved by this app.
+  </footer>
+
+  <script src="./db.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

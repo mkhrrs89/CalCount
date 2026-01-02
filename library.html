@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Calory Local — Food Library</title>
+  <link rel="stylesheet" href="./styles.css"/>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="dot"></div>
+      <div>
+        <div class="title">Calory Local</div>
+        <div class="subtitle">local food memory</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <a class="navlink" href="./index.html">Log</a>
+      <a class="navlink active" href="./library.html">Food Library</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <div class="row space">
+        <h2>Add / edit food</h2>
+        <div class="muted small" id="editHint">Add a reusable food so the estimator can match your usual stuff.</div>
+      </div>
+
+      <form id="foodForm" class="form">
+        <input type="hidden" id="foodId"/>
+
+        <div class="grid2">
+          <div>
+            <label class="label" for="foodName">Name</label>
+            <input id="foodName" class="input" placeholder="e.g., Turkey spaghetti (my recipe)" required/>
+          </div>
+          <div>
+            <label class="label" for="foodCalories">Calories (default)</label>
+            <input id="foodCalories" class="input" type="number" min="0" step="1" placeholder="e.g., 650" required/>
+          </div>
+        </div>
+
+        <div class="grid2">
+          <div>
+            <label class="label" for="foodPortion">Default portion label (optional)</label>
+            <input id="foodPortion" class="input" placeholder="e.g., 1 bowl, 2 slices, 180g"/>
+          </div>
+          <div>
+            <label class="label" for="foodTags">Tags (optional)</label>
+            <input id="foodTags" class="input" placeholder="e.g., homemade, dinner, chipotle"/>
+          </div>
+        </div>
+
+        <label class="label" for="foodNotes">Notes (optional)</label>
+        <textarea id="foodNotes" class="textarea" rows="3" placeholder="e.g., usually extra parm; light oil; no sour cream"></textarea>
+
+        <div class="row">
+          <button class="btn" type="submit">Save food</button>
+          <button id="resetFood" class="btn ghost" type="button">Reset</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card">
+      <div class="row space">
+        <h2>Your foods</h2>
+        <input id="foodSearch" class="input" placeholder="Search foods…"/>
+      </div>
+      <div id="foods" class="entries"></div>
+    </section>
+
+    <section class="card">
+      <h2>Backup</h2>
+      <p class="muted">Export/Import your local text database (foods + logs) as a JSON file.</p>
+      <div class="row wrap">
+        <button id="exportBtn" class="btn" type="button">Export JSON</button>
+        <label class="btn ghost fileBtn">
+          Import JSON
+          <input id="importFile" type="file" accept="application/json"/>
+        </label>
+        <button id="wipeBtn" class="btn danger" type="button">Wipe local data</button>
+      </div>
+      <div id="backupStatus" class="muted small"></div>
+    </section>
+  </main>
+
+  <footer class="footer muted small">
+    All data stays in your browser (IndexedDB). If you clear site data, your logs/foods go away — use Export.
+  </footer>
+
+  <script src="./db.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
