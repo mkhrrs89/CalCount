@@ -106,6 +106,13 @@ async function initLogPage() {
 
   const saveBtn = $("#saveBtn");
   const saveFoodBtn = $("#saveFoodBtn");
+  const saveFoodPanel = $("#saveFoodPanel");
+  const saveFoodName = $("#saveFoodName");
+  const saveFoodCalories = $("#saveFoodCalories");
+  const saveFoodPortion = $("#saveFoodPortion");
+  const saveFoodTags = $("#saveFoodTags");
+  const saveFoodConfirm = $("#saveFoodConfirm");
+  const saveFoodCancel = $("#saveFoodCancel");
 
   const entriesWrap = $("#entries");
   const dayTotalEl = $("#dayTotal");
@@ -250,12 +257,35 @@ async function initLogPage() {
     lastEstimate = null;
     adjustedCalories = null;
     estimateCard.classList.add("hidden");
+    hideSaveFoodPanel();
     estCaloriesEl.textContent = "—";
     estRangeEl.textContent = "—";
     estMatchEl.textContent = "—";
     breakdownEl.innerHTML = "";
     questionsEl.innerHTML = "";
     assumptionsEl.innerHTML = "";
+  }
+
+  function hideSaveFoodPanel() {
+    if (!saveFoodPanel) return;
+    saveFoodPanel.classList.add("hidden");
+    saveFoodName.value = "";
+    saveFoodCalories.value = "";
+    saveFoodPortion.value = "";
+    saveFoodTags.value = "";
+  }
+
+  function showSaveFoodPanel() {
+    if (!saveFoodPanel) return;
+    const fallbackName = (mealEl.value || lastEstimate?.label || "Food").trim() || "Food";
+    const calories = adjustedCalories ?? (Number(lastEstimate?.estimated_calories || 0) | 0);
+
+    saveFoodName.value = fallbackName;
+    saveFoodCalories.value = calories;
+    saveFoodPortion.value = saveFoodPortion.value || "1 serving";
+    saveFoodTags.value = saveFoodTags.value || "";
+    saveFoodPanel.classList.remove("hidden");
+    saveFoodName.focus();
   }
 
   // Adjust chips
@@ -368,13 +398,26 @@ async function initLogPage() {
 
   saveFoodBtn.addEventListener("click", async () => {
     if (!lastEstimate) return;
+    showSaveFoodPanel();
+  });
 
-    const name = prompt("Save food name:", mealEl.value || lastEstimate.label || "Food");
-    if (!name) return;
+  saveFoodCancel?.addEventListener("click", () => {
+    hideSaveFoodPanel();
+  });
 
-    const calories = adjustedCalories ?? (Number(lastEstimate.estimated_calories || 0) | 0);
-    const portion = prompt("Portion label (optional):", "1 serving") || "";
-    const tags = prompt("Tags (comma-separated, optional):", "") || "";
+  saveFoodConfirm?.addEventListener("click", async () => {
+    if (!lastEstimate) return;
+
+    const name = String(saveFoodName.value || "").trim();
+    if (!name) {
+      setStatus("Add a name before saving.");
+      saveFoodName.focus();
+      return;
+    }
+
+    const calories = Math.max(0, Number(saveFoodCalories.value || 0) | 0);
+    const portion = String(saveFoodPortion.value || "").trim();
+    const tags = String(saveFoodTags.value || "").trim();
 
     await upsertFood({
       name,
@@ -384,7 +427,9 @@ async function initLogPage() {
       notes: noteEl.value || "",
     });
 
-    alert("Saved to Food Library.");
+    hideSaveFoodPanel();
+    setStatus("Saved to Food Library.");
+    setTimeout(() => setStatus(""), 2500);
   });
 }
 

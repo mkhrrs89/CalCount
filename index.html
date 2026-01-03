@@ -95,6 +95,35 @@
           <button id="saveBtn" class="btn good" type="button">Save to log</button>
           <button id="saveFoodBtn" class="btn ghost" type="button">Save as Food (to reuse)</button>
         </div>
+        <div id="saveFoodPanel" class="estimate hidden">
+          <div class="row space">
+            <strong>Save to Food Library</strong>
+            <button id="saveFoodCancel" class="btn ghost smallBtn" type="button">Cancel</button>
+          </div>
+          <div class="grid2">
+            <div>
+              <label class="label" for="saveFoodName">Name</label>
+              <input id="saveFoodName" class="input" placeholder="e.g., Turkey spaghetti (my recipe)"/>
+            </div>
+            <div>
+              <label class="label" for="saveFoodCalories">Calories (default)</label>
+              <input id="saveFoodCalories" class="input" type="number" min="0" step="1"/>
+            </div>
+          </div>
+          <div class="grid2">
+            <div>
+              <label class="label" for="saveFoodPortion">Default portion label (optional)</label>
+              <input id="saveFoodPortion" class="input" placeholder="e.g., 1 serving"/>
+            </div>
+            <div>
+              <label class="label" for="saveFoodTags">Tags (optional)</label>
+              <input id="saveFoodTags" class="input" placeholder="e.g., homemade, dinner"/>
+            </div>
+          </div>
+          <div class="row">
+            <button id="saveFoodConfirm" class="btn good" type="button">Save food</button>
+          </div>
+        </div>
       </div>
     </section>
 
