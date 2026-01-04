@@ -344,7 +344,13 @@ async function initLogPage() {
 
       if (!res.ok) {
         const t = await res.text();
-        throw new Error(`API error (${res.status}): ${t.slice(0, 400)}`);
+        let message = t.trim();
+        try {
+          const parsed = JSON.parse(t);
+          if (parsed?.error) message = String(parsed.error);
+        } catch {}
+        const detail = message ? `: ${message}` : "";
+        throw new Error(`API error (${res.status})${detail}`.slice(0, 500));
       }
 
       const est = await res.json();
